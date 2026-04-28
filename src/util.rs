@@ -1618,7 +1618,7 @@ pub fn rfc6637_unwrap_key(private_key: &CompactECKey<Private>, wrapped_key: &[u8
     // RFC6637 KDF
     let hash = rfc6637_kdf(fingerprint, &secret);
 
-    let unwrapped = decrypt(Cipher::from_nid(Nid::ID_AES128_WRAP).unwrap(), &hash[..16], None, &unpacked.wrapped)?;
+    let unwrapped = decrypt(Cipher::from_nid(Nid::ID_AES128_WRAP).unwrap(), &hash[..16], Some(&[0xA6u8; 8]), &unpacked.wrapped)?;
 
     let padding_len = *unwrapped.last().unwrap() as usize;
     for i in 0..padding_len {
